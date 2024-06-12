@@ -1,0 +1,47 @@
+#include <WiFi.h>
+
+const char* ssid = "YourWiFiSSID";     // Your WiFi SSID
+const char* password = "YourWiFiPassword"; // Your WiFi Password
+
+const int waterLevelPin = A0; // Analog pin connected to the water level sensor
+const int pumpPin = 2;        // Digital pin connected to the water pump
+
+void setup() {
+  Serial.begin(115200);
+  pinMode(waterLevelPin, INPUT);
+  pinMode(pumpPin, OUTPUT);
+
+  // Connect to WiFi
+  Serial.println();
+  Serial.println();
+  Serial.print("Connecting to ");
+  Serial.println(ssid);
+
+  WiFi.begin(ssid, password);
+
+  while (WiFi.status() != WL_CONNECTED) {
+    delay(500);
+    Serial.print(".");
+  }
+
+  Serial.println("");
+  Serial.println("WiFi connected");
+  Serial.println("IP address: ");
+  Serial.println(WiFi.localIP());
+}
+
+void loop() {
+  int waterLevel = analogRead(waterLevelPin);
+  
+  if (waterLevel > 500) { // Adjust this threshold based on your sensor and requirements
+    // Water level is high, activate pump
+    digitalWrite(pumpPin, HIGH);
+    Serial.println("Flood Detected! Pump Activated!");
+  } else {
+    // Water level is normal, deactivate pump
+    digitalWrite(pumpPin, LOW);
+    Serial.println("No Flood Detected. Pump Deactivated.");
+  }
+  
+  delay(5000); // Check water level every 5 seconds
+}
