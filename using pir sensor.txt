@@ -1,0 +1,23 @@
+import random
+import time
+
+def read_motion_sensor(adc_pin):
+    # Simulate random motion sensor readings
+    return random.random()
+
+def main():
+    pir_pin = None  # Placeholder for the actual GPIO pin
+
+    while True:
+        pir_value = read_motion_sensor(None)
+
+        if pir_value > 0.5:
+            print("Motion detected!")
+            time.sleep(2)  # Wait for 2 seconds before checking again
+        else:
+            print("No motion detected.")
+
+        time.sleep(1)  # Check every second
+
+if __name__ == "__main__":
+    main()
