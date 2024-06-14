@@ -1,0 +1,25 @@
+import machine
+import onewire
+import ds18x20
+import time
+
+# Initialize the onewire bus
+ow = onewire.OneWire(machine.Pin(16))
+
+# Initialize the temperature sensor
+ds = ds18x20.DS18X20(ow)
+
+# Scan for temperature sensors
+roms = ds.scan()
+
+# Print the number of temperature sensors found
+print("Found", len(roms), "temperature sensor(s)")
+
+while True:
+    # Read the temperature from each sensor
+    for rom in roms:
+        temp = ds.read_temp(rom)
+        print("Temperature: {:.2f}°C".format(temp))
+    
+    # Wait for 2 seconds before reading again
+    time.sleep(2)
