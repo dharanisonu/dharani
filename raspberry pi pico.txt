@@ -1,0 +1,17 @@
+import machine
+
+# Set up GPIO 5 as an output
+led = machine.Pin(5, machine.Pin.OUT)
+
+def loop():
+    # Turn on the LED
+    led.value(1)
+    # Wait for 500ms
+    machine.dedelay(500)
+    # Turn off the LED
+    led.value(0)
+    # Wait for 500ms
+    machine.dedelay(500)
+
+while True:
+    loop()
