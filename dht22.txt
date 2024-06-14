@@ -1,0 +1,18 @@
+import time
+import random
+
+# Simulated GPIO pins
+DHT_PIN = 5  # GPIO Pin 5
+
+# Simulate reading temperature and humidity data
+def read_dht_data():
+    # Simulate temperature and humidity values
+    temperature = random.uniform(20, 30)
+    humidity = random.uniform(40, 60)
+    return temperature, humidity
+
+# Main program
+while True:
+    temperature, humidity = read_dht_data()
+    print("Temperature: {:.1f}°C, Humidity: {:.1f}%".format(temperature, humidity))
+    time.sleep(2)
