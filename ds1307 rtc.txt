@@ -1,0 +1,36 @@
+import machine
+from machine import I2C, Pin
+import utime
+
+# Initialize I2C
+i2c = I2C(0, scl=Pin(9), sda=Pin(8), freq=100000)
+
+# DS1307 address
+DS1307_ADDR = 0x68
+
+# Function to read from DS1307
+def read_ds1307():
+    buf = bytearray(7)
+    i2c.writeto(DS1307_ADDR, bytes([0]))
+    i2c.readfrom_into(DS1307_ADDR, buf)
+    return buf
+
+# Function to convert BCD to decimal
+def bcd_to_decimal(bcd):
+    return (bcd // 16) * 10 + (bcd % 16)
+
+# Main program
+while True:
+    # Read time from DS1307
+    rtc_data = read_ds1307()
+
+    # Extract time components
+    second = bcd_to_decimal(rtc_data[0])
+    minute = bcd_to_decimal(rtc_data[1])
+    hour = bcd_to_decimal(rtc_data[2] & 0x3F)  # 24-hour format
+
+    # Print time to serial monitor
+    print("{:02}:{:02}:{:02}".format(hour, minute, second))
+
+    # Wait for one second
+    utime.sleep(1)
